@@ -1,7 +1,9 @@
 /* Client-side router settings */
 
 Router.configure({
-  layoutTemplate:"layout"
+  layoutTemplate:"layout",
+  notFoundTemplate:"400",
+  loadingTemplate:"loading"
 });
 
 Router.route("/", {
