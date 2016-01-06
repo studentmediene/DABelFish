@@ -2,7 +2,7 @@
 
 Router.configure({
   layoutTemplate:"layout",
-  notFoundTemplate:"400",
+  notFoundTemplate:"page_not_found",
   loadingTemplate:"loading"
 });
 
@@ -19,13 +19,4 @@ Router.route("/log", {
 Router.route("/admin", {
   name:"admin",
   template:"admin"
-});
-
-// Probably insecure
-Router.onBeforeAction(function() {
-  if (!Meteor.userId()) {
-    this.render("login");
-  } else {
-    this.next();
-  }
 });
