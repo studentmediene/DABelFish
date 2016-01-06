@@ -20,3 +20,4 @@ twbs:bootstrap
 accounts-password
 useraccounts:bootstrap
 iron:router
+alanning:roles
