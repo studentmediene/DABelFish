@@ -22,7 +22,7 @@ Adds highly customizable form-templates for sign-in and sign-up, styled for
 Twitter Bootstrap.
 
 Add `{{> atForm}}` to show the sign-in/sign-up forms in a template. See the
-[documentation]
+[documentation](https://github.com/meteor-useraccounts/core/blob/master/Guide.md#basic-customization)
 for configuration.
 
 ### [Iron Router](https://atmospherejs.com/iron/router)
