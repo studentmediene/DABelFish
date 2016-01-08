@@ -2,4 +2,63 @@
   <div class="page-header">
     <h1>Admin <small>page</small></h1>
   </div>
+  <div class="row">
+    <div class="col-md-4 col-md-push-8">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Add a User</h3>
+        </div>
+        <div class="panel-body">
+          <form id="addUser">
+            <div class="form-group">
+              <label class="control-label" for="addUser_Username">Email</label>
+              <input type="text" name="username" class="form-control" id="addUser_Username" placeholder="Email">
+            </div>
+            <div class="form-group">
+              <label class="control-label" for="AddUser_Password">Password</label>
+              <input type="password" name="password" class="form-control" id="AddUser_Password" placeholder="Password">
+            </div>
+            <div class="form-group">
+              <label class="control-label" for="addUser_Name">Full name or name of show</label>
+              <input type="text" name="name" class="form-control" id="addUser_Name" placeholder="Name">
+            </div>
+            <div class="form-group">
+              <input type="checkbox" name="admin" id="addUser_admin"> Admin
+            </div>
+            <button type="submit" class="btn btn-primary">Add User</button>
+            <button type="reset" class="btn btn-default">Reset</button>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-8 col-md-pull-4">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Users</h3>
+        </div>
+        <div class="panel-body">
+          <table class="table table-hover table-responsive">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Roles</th>
+                <th>Created</th>
+              </tr>
+            </thead>
+            <tbody>
+              {{#each users}}
+                <tr>
+                  <td>{{profile.name}}</td>
+                  <td>{{username}}</td>
+                  <td>{{roles}}</td>
+                  <td>{{formatDate createdAt}} by {{createdBy}}</td>
+                </tr>
+              {{/each}}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
