@@ -18,7 +18,13 @@ ecmascript              # Enable ECMAScript2015+ syntax in app code
 
 twbs:bootstrap
 accounts-password
-useraccounts:bootstrap
 iron:router
 aldeed:collection2
-aldeed:autoform
+ongoworks:security
+juliancwirko:s-alert
+juliancwirko:s-alert-slide
+alanning:roles
+momentjs:moment
+check
+dispatch:run-as-user
+random
