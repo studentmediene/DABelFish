@@ -1,5 +1,57 @@
 <template name="home">
   <div class="page-header">
-    <h1>Home <small>page</small></h1>
+    <h1>DAB <small>text</small></h1>
   </div>
+  <form id="new-text">
+    <div class="form-group">
+      <label for="text">New DAB text</label>
+      <div class="input-group">
+        <input type="text" class="form-control" id="text" placeholder="Text" aria-describedby="count-addon" maxlength="{{textLimit}}">
+        <span class="input-group-addon" id="count-addon"><span id="characters-used">0</span>/{{textLimit}}</span>
+      </div>
+    </div>
+    <!-- Submit button for mobile and tablet -->
+    <button type="submit" class="btn btn-primary visible-sm visible-xs">Submit</button>
+  </form>
+  <br>
+  <blockquote class="">
+    <h4>{{currentText.text}}</h4>
+    <footer>{{currentText.createdBy}} <cite>{{formatDate currentText.createdAt}}</cite></footer>
+  </blockquote>
+  <br>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">Log</h3>
+    </div>
+    <div class="panel-body">
+      <table class="table table-hover table-responsive">
+        <thead>
+          <tr>
+            <th>Text</th>
+            <th>Created</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each texts}}
+            <tr>
+              <td>{{text}}</td>
+              <td>{{formatDate createdAt}} by {{createdBy}}</td>
+            </tr>
+          {{/each}}
+        </tbody>
+      </table>
+      <nav>
+        <ul class="pager">
+          <li class="previous {{paginationNewerDisabled}}"><a href="#" id="pagination-newer"><span aria-hidden="true">&larr;</span> Newer</a></li>
+          <li class="next {{paginationOlderDisabled}}"><a href="#" id="pagination-older">Older <span aria-hidden="true">&rarr;</span></a></li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    $('#text').keyup(function () {
+        $('#characters-used').text($(this).val().length);
+    });
+  </script>
 </template>
