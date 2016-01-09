@@ -11,11 +11,6 @@ Router.route("/", {
   template:"home"
 });
 
-Router.route("/log", {
-  name:"log",
-  template:"log"
-});
-
 Router.route("/admin", {
   name:"admin",
   template:"admin"
