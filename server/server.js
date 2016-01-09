@@ -4,11 +4,8 @@ Meteor.publish("allUserData", function() {
   return Meteor.users.find();
 });
 
-Meteor.publish("DABText", function() {
-  return DABText.find({}, {
-    //skip: Session.get("DABText_skip"),
-    limit: 30
-  });
+Meteor.publish("dabText", function() {
+  return DABText.find();
 });
 
 Meteor.startup(function(){
@@ -20,7 +17,7 @@ Meteor.startup(function(){
       profile: {
         name: "Radioteknisk"
       },
-      createdBy: "System_1337",
+      createdBy: "GLaDOS",
       createdByID: Random.id()
     });
     Accounts.setPassword(userId, "secret");
