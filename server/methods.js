@@ -2,6 +2,10 @@
 
 Meteor.methods({
   addUser: function(user, password) {
+
+    check(user, Object);
+    check(password, String);
+
     user.createdByID = this.userId;
     user.createdBy = Meteor.user().profile.name;
 
@@ -13,7 +17,7 @@ Meteor.methods({
     }
 
     userId = Meteor.users.insert(user);
-    
+
     if(userId) {
       Accounts.setPassword(userId, password);
     }
@@ -27,5 +31,16 @@ Meteor.methods({
     Meteor.runRestricted(function() {
       Roles.addUsersToRoles(userId, "admin");
     });
+  },
+  addText: function(text) {
+
+    check(text, Object);
+
+    text.createdByID = this.userId;
+    text.createdBy = Meteor.user().profile.name;
+
+    Security.can(this.userId).insert(text).for(DABText).throw();
+
+    DABText.insert(text);
   }
 });
