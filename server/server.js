@@ -1,7 +1,12 @@
 /* Server-side code */
 
 Meteor.publish("allUserData", function() {
-  return Meteor.users.find();
+  if(Roles.userIsInRole(this.userId, 'admin')){
+    return Meteor.users.find();
+  } else {
+    this.stop();
+    return;
+  }
 });
 
 Meteor.publish("dabText", function() {
