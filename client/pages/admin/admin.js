@@ -31,6 +31,8 @@ Template.admin.events({
     }
     if(event.target.admin.checked) {
         user.roles = ['admin'];
+    } else {
+      user.roles = ['user'];
     }
     // Add user
     Meteor.call("addUser", user, password, function(error, result){
