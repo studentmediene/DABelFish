@@ -20,3 +20,11 @@ Router.route("/admin", {
   name:"admin",
   template:"admin"
 });
+
+Router.route("/user/:_id", {
+  name:"user",
+  template:"user",
+  data: function(){
+     return Meteor.users.findOne({_id: this.params._id});
+  }
+});

@@ -27,10 +27,29 @@ Meteor.methods({
       Accounts.setPassword(userId, password);
     });
   },
-  makeAdmin: function(userId) {
-    Meteor.runRestricted(function() {
-      Roles.addUsersToRoles(userId, "admin");
-    });
+  addToRole: function(userId, role) {
+    check(role, String);
+    check(userId, String);
+
+    modifier = {
+      $push: {roles: role}
+    }
+
+    Security.can(this.userId).update(userId, modifier).for(Meteor.users).throw();
+
+    Roles.addUsersToRoles(userId, role);
+  },
+  removeFromRole: function(userId, role) {
+    check(role, String);
+    check(userId, String);
+
+    modifier = {
+      $pull: {roles: role}
+    }
+
+    Security.can(this.userId).update(userId, modifier).for(Meteor.users).throw();
+
+    Roles.removeUsersFromRoles(userId, role);
   },
   addText: function(text) {
 
@@ -57,7 +76,6 @@ Meteor.methods({
   },
   checkPassword: function (digest) {
     // This is kind of a hack, and might brake in the future.
-    // If it breaks, maybe we could just remove the old password thing?
     if(this.userId) {
       var user = Meteor.user();
       var password = {digest: digest, algorithm: 'sha-256'};

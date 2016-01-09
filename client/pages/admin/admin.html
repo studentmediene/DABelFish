@@ -1,5 +1,4 @@
 <template name="admin">
-  {{#if isInRole 'admin'}}
   <div class="page-header">
     <h1>Admin <small>page</small></h1>
   </div>
@@ -50,7 +49,7 @@
             <tbody>
               {{#each users}}
                 <tr>
-                  <td>{{profile.name}}</td>
+                  <td><a href="{{pathFor 'user'}}">{{profile.name}}</a></td>
                   <td>{{username}}</td>
                   <td>{{roles}}</td>
                   <td>{{formatDate createdAt}} by {{createdBy}}</td>
@@ -62,7 +61,4 @@
       </div>
     </div>
   </div>
-  {{else}}
-  {{> access_denied}}
-  {{/if}}
 </template>

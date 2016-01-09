@@ -59,7 +59,7 @@ Template.admin.events({
     } else {
       user.roles = ['user'];
     }
-    
+
     // Add user
     Meteor.call("addUser", user, password, function(error, result){
       if(error){

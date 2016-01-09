@@ -1,0 +1,45 @@
+<template name="user">
+  <div class="page-header">
+    <h1>User <small>{{profile.name}}</small></h1>
+  </div>
+  <div class="row">
+    <div class="col-lg-4 col-lg-push-8">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Profile Info</h3>
+        </div>
+        <div class="panel-body">
+          <p>
+            <b>Name: </b>{{profile.name}}
+          </p>
+          <p>
+            <b>Email: </b>{{username}}
+          </p>
+          <p id="user-buttons">
+            {{#if inRole 'disabled'}}
+              <button id="enableUser" class="btn btn-success">Enable user</button>
+            {{else}}
+              <button id="disableUser" class="btn btn-danger">Disable user</button>
+            {{/if}}
+            {{#if inRole 'admin'}}
+              <button id="removeAdmin" class="btn btn-success">Pull admin privileges</button>
+            {{else}}
+              <button id="addAdmin" class="btn btn-danger">Give admin privileges</button>
+            {{/if}}
+            <button id="resetPassword" class="btn btn-danger">Reset password</button>
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-8 col-lg-pull-4">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">User Log</h3>
+        </div>
+        <div class="panel-body">
+          Here's a log of the users activity (Not yet implemented)
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
