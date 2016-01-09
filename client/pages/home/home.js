@@ -46,8 +46,20 @@ Template.home.helpers({
 
 Template.home.events({
   "submit #new-text": function(event, template) {
+    var text = event.target.text.value;
+
+    // Validation
+    if(!text) {
+      sAlert.error("The text cannot be empty");
+      return false;
+    }
+    if (!Meteor.userId()) {
+      sAlert.error("You must logg in to do this");
+      return false;
+    }
+
     Meteor.call("addText", {
-      text: event.target.text.value
+      text: text
     }, function(error, result){
       if(error){
         sAlert.error(error.reason);
