@@ -42,5 +42,17 @@ Meteor.methods({
     Security.can(this.userId).insert(text).for(DABText).throw();
 
     DABText.insert(text);
+  },
+  resetText: function() {
+    text = {
+      // Temporary default text
+      text: "Radio Revolt, studentradioen i Trondheim",
+      createdBy: "GLaDOS",
+      createdByID: Random.id()
+    }
+
+    Security.can(this.userId).insert(text).for(DABText).throw();
+
+    DABText.insert(text);
   }
 });

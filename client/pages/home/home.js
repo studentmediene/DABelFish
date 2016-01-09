@@ -69,5 +69,15 @@ Template.home.events({
     var count = DABText.find().count() - 20;
     if(cursor < count)
       Session.set("dabTextCursor", cursor + 20);
+  },
+  "click #reset-text": function(event, template) {
+    Meteor.call("resetText", function(error, result){
+      if(error){
+        sAlert.error(error.reason);
+        console.log("error", error);
+      } else {
+        sAlert.success("Text reset to default");
+      }
+    });
   }
 });

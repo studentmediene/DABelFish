@@ -2,6 +2,7 @@
   <div class="page-header">
     <h1>DAB <small>text</small></h1>
   </div>
+
   <form id="new-text">
     <div class="form-group">
       <label for="text">New DAB text</label>
@@ -13,13 +14,15 @@
     <!-- Submit button for mobile and tablet -->
     <button type="submit" class="btn btn-primary visible-sm visible-xs">Submit</button>
   </form>
-  <br>
-  <blockquote class="">
+
+  <blockquote id="current-text">
     <h4>{{currentText.text}}</h4>
     <footer>{{currentText.createdBy}} <cite>{{formatDate currentText.createdAt}}</cite></footer>
   </blockquote>
-  <br>
-  <div class="panel panel-default">
+
+  <button class="btn btn-danger" id="reset-text">Reset DAB text to default</button>
+
+  <div class="panel panel-default" id="text-log">
     <div class="panel-heading">
       <h3 class="panel-title">Log</h3>
     </div>

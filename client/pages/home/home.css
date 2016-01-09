@@ -1,1 +1,21 @@
 /* CSS for home page */
+
+form#new-text {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+blockquote#current-text {
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+button#reset-text {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+div.panel#text-log {
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
