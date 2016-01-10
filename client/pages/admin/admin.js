@@ -22,7 +22,6 @@ Template.admin.helpers({
 
 Template.admin.events({
   "submit #addUser": function(event, template){
-    var password = event.target.password.value;
     var username = event.target.username.value;
     var name = event.target.name.value;
     var admin = event.target.admin.checked;
@@ -36,10 +35,6 @@ Template.admin.events({
     }
     if(!re.test(username)) {
       sAlert.error("Provide a valid email");
-      return false;
-    }
-    if(!password) {
-      sAlert.error("Provide a password");
       return false;
     }
     if(!name) {
@@ -61,14 +56,13 @@ Template.admin.events({
     }
 
     // Add user
-    Meteor.call("addUser", user, password, function(error, result){
+    Meteor.call("addUser", user, function(error, result){
       if(error){
         sAlert.error(error.reason);
         console.log("error", error);
       } else {
         sAlert.success('User added');
         event.target.username.value = "";
-        event.target.password.value = "";
         event.target.name.value = "";
         event.target.admin.checked = false;
       }

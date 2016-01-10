@@ -47,14 +47,12 @@ Template.user.events({
     });
   },
   "click #resetPassword": function(event, template){
-    // Temporary default password, will send a new random password by mail in the future
-    password = "secret";
-    Meteor.call("setPassword", this._id, password, function(error, result){
+    Meteor.call("setPassword", this._id, this.username, function(error, result){
       if(error){
         sAlert.error("Unable to reset password");
         console.log("error", error);
       } else {
-        sAlert.success("Password set to: " + password, {timeout: 'none', position: 'bottom'});
+        sAlert.success("A new password is sendt to the users by email");
       }
     });
   }
