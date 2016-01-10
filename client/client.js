@@ -1,7 +1,9 @@
 /* Client-side code */
 
-Meteor.subscribe("dabText");
-Meteor.subscribe("allUserData");
+Accounts.onLogin(function(){
+  Meteor.subscribe("dabText");
+  Meteor.subscribe("allUserData");
+});
 
 sAlert.config({
   effect: 'slide',

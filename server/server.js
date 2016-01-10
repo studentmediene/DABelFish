@@ -10,7 +10,9 @@ Meteor.publish("allUserData", function() {
 });
 
 Meteor.publish("dabText", function() {
-  return DABText.find();
+  if(this.userId){
+    return DABText.find();
+  }
 });
 
 Meteor.startup(function(){
