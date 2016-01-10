@@ -21,3 +21,9 @@ DABText.permit(['insert']).ifLoggedIn().apply();
 
 // Never change or delete a record in DABText
 DABText.permit(['update', 'remove']).never().apply();
+
+// Logged in users can create records in UserLog
+UserLog.permit(["insert"]).ifLoggedIn().apply();
+
+// Never change or delete a record in UserLog
+UserLog.permit(["update", "remove"]).never().apply();

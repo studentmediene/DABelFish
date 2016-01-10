@@ -22,6 +22,7 @@ Meteor.methods({
       Accounts.setPassword(userId, password);
     }
 
+
     Mail.send({
       to: user.username,
       from: "Radioteknisk <radioteknisk@studentmediene.no>",
@@ -36,7 +37,7 @@ Meteor.methods({
             "-- \n" +
             "Radioteknisk"
     });
-
+    Meteor.call("user_logger", "User created", userId);
   },
   setPassword: function(userId, email) {
     password = Random.secret(10);
@@ -50,6 +51,7 @@ Meteor.methods({
               "Your new password is: " + password
       });
     });
+    Meteor.call("user_logger", "New password sent to mail.", userId);
   },
   addToRole: function(userId, role) {
     check(role, String);
@@ -62,6 +64,17 @@ Meteor.methods({
     Security.can(this.userId).update(userId, modifier).for(Meteor.users).throw();
 
     Roles.addUsersToRoles(userId, role);
+
+    Meteor.call("user_logger", "Role added: " + role, userId);
+    // var obj = {
+    //   action: "Role added: " + role,
+    //   createdById: this.userId,
+    //   userId: userId,
+    //   createdBy: Meteor.user().profile.name
+    // }
+    // Security.can(this.userId).insert(obj).for(UserLog).throw();
+
+    // UserLog.insert(obj);
   },
   removeFromRole: function(userId, role) {
     check(role, String);
@@ -74,6 +87,7 @@ Meteor.methods({
     Security.can(this.userId).update(userId, modifier).for(Meteor.users).throw();
 
     Roles.removeUsersFromRoles(userId, role);
+    Meteor.call("user_logger", "Role removed: " + role, userId);
   },
   addText: function(text) {
 
@@ -108,5 +122,16 @@ Meteor.methods({
     } else {
       return false;
     }
+  },
+  user_logger: function(action, userId) {
+    var obj = {
+      action: action,
+      createdById: this.userId,
+      userId: userId,
+      createdBy: Meteor.user().profile.name
+    }
+    Security.can(this.userId).insert(obj).for(UserLog).throw();
+
+    UserLog.insert(obj);
   }
 });
