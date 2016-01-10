@@ -15,6 +15,15 @@ Meteor.publish("dabText", function() {
   }
 });
 
+Meteor.publish("userLog", function() {
+  if (Roles.userIsInRole(this.userId, "admin")){
+    return UserLog.find();
+  } else {
+    this.stop();
+    return;
+  }
+})
+
 Meteor.startup(function(){
   if(!Meteor.users.findOne()) {
     console.log("Found no users in the database, creating the default user.");

@@ -3,6 +3,7 @@
 Accounts.onLogin(function(){
   Meteor.subscribe("dabText");
   Meteor.subscribe("allUserData");
+  Meteor.subscribe("userLog");
 });
 
 sAlert.config({

@@ -37,7 +37,36 @@
           <h3 class="panel-title">User Log</h3>
         </div>
         <div class="panel-body">
-          Here's a log of the users activity (Not yet implemented)
+          <ul class="nav nav-tabs">
+            <li role="presentation" id="dab-texts" class="active"><a href="">DAB text</a></li>
+            <li role="presentation" id="other-activity"><a href="">Other activity</a></li>
+          </ul>
+          <table class="table table-hover table-responsive">
+            <thead>
+              <tr>
+                {{#if action }}
+                <th>Action</th>
+                {{else}}
+                <th>Text</th>
+                {{/if}}
+                <th>Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              {{#each actions}}
+                <tr>
+                  <td>{{#if action }} {{action}} {{else}} {{text}} {{/if}}</td>
+                  <td>{{formatDate createdAt}} {{#if action}} by {{createdBy}} {{/if}}</td>
+                </tr>
+              {{/each}}
+            </tbody>
+          </table>
+          <nav>
+            <ul class="pager">
+              <li class="previous {{paginationNewerDisabled}}"><a href="#" id="pagination-newer"><span aria-hidden="true">&larr;</span> Newer</a></li>
+              <li class="next {{paginationOlderDisabled}}"><a href="#" id="pagination-older">Older <span aria-hidden="true">&rarr;</span></a></li>
+            </ul>
+          </nav>
         </div>
       </div>
     </div>
