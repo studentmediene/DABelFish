@@ -32,8 +32,9 @@ Meteor.methods({
             "Email: " + user.username + "\n" +
             "Password: " + password + "\n\n" +
             "The first time you sign in, you'll have to change the password.\n\n" +
-            "Is you have any questions, please reply to this email.\n\n" +
-            "-Radioteknisk"
+            "If you have any questions, please reply to this email.\n\n" +
+            "-- \n" +
+            "Radioteknisk"
     });
 
   },
