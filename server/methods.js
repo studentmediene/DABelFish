@@ -100,7 +100,7 @@ Meteor.methods({
 
     DABText.insert(text);
 
-    updateDabFtp();
+    sendDABTextFTP();
   },
   resetText: function() {
     text = {
@@ -113,7 +113,7 @@ Meteor.methods({
 
     DABText.insert(text);
 
-    updateDabFtp();
+    sendDABTextFTP();
   },
   checkPassword: function (digest) {
     // This is kind of a hack, and might brake in the future.
@@ -141,31 +141,6 @@ Meteor.methods({
 
 // Private methods
 
-updateDabFtp = function() {
-  var FTP = Meteor.npmRequire('ftp');
-
-  var text = DABText.findOne({}, {
-    sort: {createdAt: -1}
-  });
-
-  var buffer = new Buffer(text.text);
-
-  var c = new FTP();
-
-  c.on('ready', function() {
-    c.put(buffer, 'messages/messages.txt', function(err) {
-      if (err) throw err;
-      c.end();
-    });
-  });
-
-  c.connect({
-    host: Meteor.settings.ftp.host,
-    user: Meteor.settings.ftp.user,
-    password: Meteor.settings.ftp.password
-  });
-}
-
 getCurrentShow = function() {
   return HTTP.get(Meteor.settings.radioAPI.currentShows).data.current;
 }
@@ -176,5 +151,5 @@ resetDabText = function() {
     createdBy: "GLaDOS",
     createdByID: Random.id()
   });
-  updateDabFtp();
+  sendDABTextFTP();
 }
