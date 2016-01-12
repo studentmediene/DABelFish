@@ -6,6 +6,10 @@ Meteor.methods({
     check(user, Object);
     password = Random.secret(10);
 
+    if(Meteor.settings.DEBUG) {
+      password = "secret";
+    }
+
     user.createdByID = this.userId;
     user.createdBy = Meteor.user().profile.name;
 
@@ -22,34 +26,40 @@ Meteor.methods({
       Accounts.setPassword(userId, password);
     }
 
-
-    Mail.send({
-      to: user.username,
-      from: "Radioteknisk <radioteknisk@studentmediene.no>",
-      subject: "You can now sign in at dab.radiorevolt.no",
-      text: "An administrator has created a new account with this email at rrdab.meteor.com.\n" +
-            "You are now registrerd with the following information\n\n" +
-            "Name: " + user.profile.name + "\n" +
-            "Email: " + user.username + "\n" +
-            "Password: " + password + "\n\n" +
-            "The first time you sign in, you'll have to change the password.\n\n" +
-            "If you have any questions, please reply to this email.\n\n" +
-            "-- \n" +
-            "Radioteknisk"
-    });
+    if(!Meteor.settings.DEBUG) {
+      Mail.send({
+        to: user.username,
+        from: "Radioteknisk <radioteknisk@studentmediene.no>",
+        subject: "You can now sign in at dab.radiorevolt.no",
+        text: "An administrator has created a new account with this email at rrdab.meteor.com.\n" +
+        "You are now registrerd with the following information\n\n" +
+        "Name: " + user.profile.name + "\n" +
+        "Email: " + user.username + "\n" +
+        "Password: " + password + "\n\n" +
+        "The first time you sign in, you'll have to change the password.\n\n" +
+        "If you have any questions, please reply to this email.\n\n" +
+        "-- \n" +
+        "Radioteknisk"
+      });
+    }
     Meteor.call("user_logger", "User created", userId);
   },
   setPassword: function(userId, email) {
     password = Random.secret(10);
+    if (Meteor.settings.DEBUG) {
+      password = "secret"
+    }
     Meteor.runRestricted(function() {
       Accounts.setPassword(userId, password);
-      Mail.send({
-        to: email,
-        from: "Radioteknisk <radioteknisk@studentmediene.no>",
-        subject: "New password at rrdab.meteor.com",
-        text: "An administrator has reset your password.\n" +
-              "Your new password is: " + password
-      });
+      if(!Meteor.settings.DEBUG){
+        Mail.send({
+          to: email,
+          from: "Radioteknisk <radioteknisk@studentmediene.no>",
+          subject: "New password at rrdab.meteor.com",
+          text: "An administrator has reset your password.\n" +
+          "Your new password is: " + password
+        });
+      }
     });
     Meteor.call("user_logger", "New password sent to mail.", userId);
   },

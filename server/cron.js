@@ -20,4 +20,6 @@ SyncedCron.add({
   }
 });
 
-SyncedCron.start();
+if (!Meteor.settings.DEBUG){
+  SyncedCron.start();
+}
