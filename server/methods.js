@@ -27,7 +27,7 @@ Meteor.methods({
       to: user.username,
       from: "Radioteknisk <radioteknisk@studentmediene.no>",
       subject: "You can now sign in at dab.radiorevolt.no",
-      text: "An administrator has created a new account with this email at dab.radiorevolt.no.\n" +
+      text: "An administrator has created a new account with this email at rrdab.meteor.com.\n" +
             "You are now registrerd with the following information\n\n" +
             "Name: " + user.profile.name + "\n" +
             "Email: " + user.username + "\n" +
@@ -46,7 +46,7 @@ Meteor.methods({
       Mail.send({
         to: email,
         from: "Radioteknisk <radioteknisk@studentmediene.no>",
-        subject: "New password at dab.radiorevolt.no",
+        subject: "New password at rrdab.meteor.com",
         text: "An administrator has reset your password.\n" +
               "Your new password is: " + password
       });
