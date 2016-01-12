@@ -1,4 +1,7 @@
 sendDABTextFTP = function() {
+  if (Meteor.settings.DEBUG) {
+    return;
+  }
   var FTP = Meteor.npmRequire('ftp');
 
   var text = DABText.findOne({}, {
