@@ -1,4 +1,4 @@
-/* Shared server-side methods */
+// Shared methods
 
 Meteor.methods({
   addUser: function(user) {
@@ -99,18 +99,21 @@ Meteor.methods({
     Security.can(this.userId).insert(text).for(DABText).throw();
 
     DABText.insert(text);
+
+    updateDabFtp();
   },
   resetText: function() {
     text = {
-      // Temporary default text
-      text: "Radio Revolt, studentradioen i Trondheim",
-      createdBy: "GLaDOS",
-      createdByID: Random.id()
+      text: getCurrentShow().title,
+      createdBy: Meteor.user().profile.name,
+      createdByID: this.userId
     }
 
     Security.can(this.userId).insert(text).for(DABText).throw();
 
     DABText.insert(text);
+
+    updateDabFtp();
   },
   checkPassword: function (digest) {
     // This is kind of a hack, and might brake in the future.
@@ -135,3 +138,43 @@ Meteor.methods({
     UserLog.insert(obj);
   }
 });
+
+// Private methods
+
+updateDabFtp = function() {
+  var FTP = Meteor.npmRequire('ftp');
+
+  var text = DABText.findOne({}, {
+    sort: {createdAt: -1}
+  });
+
+  var buffer = new Buffer(text.text);
+
+  var c = new FTP();
+
+  c.on('ready', function() {
+    c.put(buffer, 'messages/messages.txt', function(err) {
+      if (err) throw err;
+      c.end();
+    });
+  });
+
+  c.connect({
+    host: Meteor.settings.ftp.host,
+    user: Meteor.settings.ftp.user,
+    password: Meteor.settings.ftp.password
+  });
+}
+
+getCurrentShow = function() {
+  return HTTP.get(Meteor.settings.radioAPI.currentShows).data.current;
+}
+
+resetDabText = function() {
+  DABText.insert({
+    text: getCurrentShow().title,
+    createdBy: "GLaDOS",
+    createdByID: Random.id()
+  });
+  updateDabFtp();
+}
