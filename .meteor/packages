@@ -29,3 +29,9 @@ check
 dispatch:run-as-user
 random
 gfk:mailgun-api
+percolate:synced-cron
+meteorhacks:npm
+
+
+npm-container
+http
