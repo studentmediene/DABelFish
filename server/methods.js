@@ -44,16 +44,24 @@ Meteor.methods({
     }
     Meteor.call("user_logger", "User created", userId);
   },
-  resetPassword: function(userId, email) {
+  resetUserPassword: function(userId) {
     password = Random.secret(10);
+
     if (Meteor.settings.DEBUG) {
       password = "secret"
     }
+
+    user = Meteor.users.findOne({_id: userId});
+
+    if(!user) {
+      throw new Meteor.Error(400, "None-existing user");
+    }
+
     Meteor.runRestricted(function() {
       Accounts.setPassword(userId, password);
       if(!Meteor.settings.DEBUG){
         Mail.send({
-          to: email,
+          to: user.username,
           from: "Radioteknisk <radioteknisk@studentmediene.no>",
           subject: "New password at rrdab.meteor.com",
           text: "An administrator has reset your password.\n" +

@@ -93,7 +93,7 @@ Template.user.events({
     });
   },
   "click #resetPassword": function(event, template){
-    Meteor.call("resetPassword", this._id, this.username, function(error, result){
+    Meteor.call("resetUserPassword", this._id, function(error, result){
       if(error){
         sAlert.error("Unable to reset password");
         console.log("error", error);
