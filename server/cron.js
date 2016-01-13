@@ -1,16 +1,7 @@
-// SyncedCron.add({
-//   name: 'Update DAB-text over FTP',
-//   schedule: function(parser) {
-//     return parser.cron('0 * * * * *', true); // every minute
-//   },
-//   job: function() {
-//     var updateDabText = updateDabFtp();
-//     return updateDabText;
-//   }
-// });
 
 SyncedCron.add({
   name: 'Update DAB text with current show',
+
   schedule: function(parser) {
     return parser.cron('30 0 * * * *', true); // thirty seconds past every hour
   },
@@ -22,6 +13,7 @@ SyncedCron.add({
 
 SyncedCron.add({
   name: "Check if text has to be reset",
+
   schedule: function(parser) {
     return parser.text("every 1 minute");
   },
@@ -32,5 +24,5 @@ SyncedCron.add({
 });
 
 SyncedCron.start();
-if (!Meteor.settings.DEBUG){
-}
+// if (!Meteor.settings.DEBUG){
+// }
