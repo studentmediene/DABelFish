@@ -44,16 +44,24 @@ Meteor.methods({
     }
     Meteor.call("user_logger", "User created", userId);
   },
-  setPassword: function(userId, email) {
+  resetUserPassword: function(userId) {
     password = Random.secret(10);
+
     if (Meteor.settings.DEBUG) {
       password = "secret"
     }
+
+    user = Meteor.users.findOne({_id: userId});
+
+    if(!user) {
+      throw new Meteor.Error(400, "None-existing user");
+    }
+
     Meteor.runRestricted(function() {
       Accounts.setPassword(userId, password);
       if(!Meteor.settings.DEBUG){
         Mail.send({
-          to: email,
+          to: user.username,
           from: "Radioteknisk <radioteknisk@studentmediene.no>",
           subject: "New password at rrdab.meteor.com",
           text: "An administrator has reset your password.\n" +
@@ -76,15 +84,6 @@ Meteor.methods({
     Roles.addUsersToRoles(userId, role);
 
     Meteor.call("user_logger", "Role added: " + role, userId);
-    // var obj = {
-    //   action: "Role added: " + role,
-    //   createdById: this.userId,
-    //   userId: userId,
-    //   createdBy: Meteor.user().profile.name
-    // }
-    // Security.can(this.userId).insert(obj).for(UserLog).throw();
-
-    // UserLog.insert(obj);
   },
   removeFromRole: function(userId, role) {
     check(role, String);
