@@ -18,7 +18,7 @@ SyncedCron.add({
     return parser.text("every 1 minute");
   },
   job: function() {
-    var checkReset = checkResetDabText();
+    var checkReset = setAutomaticShowAndSongs();
     return checkReset;
   }
 });

@@ -2,6 +2,8 @@
 
 Template.home.rendered = function(){
   Session.set("dabTextCursor", 0);
+  if (!Session.get("automatic"))
+    Session.set("automatic", false);
 }
 
 
@@ -48,6 +50,9 @@ Template.home.helpers({
     for (var limit in times)
       list.push({value: times[limit]});
     return list;
+  },
+  auto_on: function() {
+    return Session.get("automatic");
   }
 });
 
@@ -102,6 +107,13 @@ Template.home.events({
     });
   },
   "click #automatic": function(event, template) {
-    console.log("Hei");
+    Meteor.call("switch_automatic", event.target.checked, function(error, result){
+      if(error){
+        sAlert.error(error.reason);
+        console.log("error", error);
+      } else {
+        sAlert.success("Automatic text turned on");
+      }
+    });
   }
 });

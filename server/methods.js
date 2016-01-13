@@ -1,5 +1,7 @@
 // Shared methods
 
+var automatic = false;
+
 Meteor.methods({
   addUser: function(user) {
 
@@ -153,6 +155,14 @@ Meteor.methods({
     Security.can(this.userId).insert(obj).for(UserLog).throw();
 
     UserLog.insert(obj);
+  },
+  switch_automatic: function(auto) {
+    if (!Meteor.user()){
+      throw new Meteor.Error(401, "You do not have access.");
+    }
+    // Session.set("automatic", auto);
+    automatic = auto;
+    setAutomaticShowAndSongs();
   }
 });
 
@@ -160,6 +170,10 @@ Meteor.methods({
 
 getCurrentShow = function() {
   return HTTP.get(Meteor.settings.radioAPI.currentShows).data.current;
+}
+
+getCurrentSong = function() {
+  return HTTP.get(Meteor.settings.radioAPI.currentSongs).data;
 }
 
 resetDabText = function() {
@@ -171,12 +185,53 @@ resetDabText = function() {
   sendDABTextFTP();
 }
 
+// Check if a dab text will, 
 checkResetDabText = function() {
   var text = DABText.findOne({}, {
     sort: {createdAt: -1}
   });
-  if (text.lastUntil){
-    if (new Date() > text.lastUntil)
-      resetDabText();
+  if (new Date() > text.lastUntil){
+    resetDabText();
   }
+}
+
+// Prioritize in this order song, custom text, show, radio name
+setAutomaticShowAndSongs = function() {
+  if (!automatic){
+    checkResetDabText();
+    return;
+  }
+  var songs = getCurrentSong();
+  var show = getCurrentShow();
+
+  // cron cannot still get userId, must find another way to find last 
+  // dabtext set by user.
+  // var lastSetText = DABText.findOne({createdByID: Meteor.userId()}, {
+  //   sort: {createdAt: -1}
+  // });
+  var lastSetText = {createdAt: undefined};
+
+  var text = "Radio Revolt, Studentradioen i Trondheim";
+  if (songs.current.title){
+    text = songs.current.title;
+  }
+  else if (lastSetText.lastUntil && lastSetText.createdAt.getHours() == new Date().getHours()){
+    text = lastSetText.text;
+  }
+  else if (show){
+    text = show.title;
+  }
+  if (text == DABText.findOne({}, {
+    sort: {createdAt: -1}
+  }).text)
+    return;
+  DABText.insert({
+    text: text,
+    // Metor.userId() can only be called from a user, not from cron
+    // createdBy: Meteor.user().profile.name,
+    // createdByID: Meteor.userId()
+    createdBy: "GLaDOS",
+    createdByID: Random.id()
+  });
+  sendDABTextFTP();
 }
