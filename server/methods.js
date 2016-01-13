@@ -76,15 +76,6 @@ Meteor.methods({
     Roles.addUsersToRoles(userId, role);
 
     Meteor.call("user_logger", "Role added: " + role, userId);
-    // var obj = {
-    //   action: "Role added: " + role,
-    //   createdById: this.userId,
-    //   userId: userId,
-    //   createdBy: Meteor.user().profile.name
-    // }
-    // Security.can(this.userId).insert(obj).for(UserLog).throw();
-
-    // UserLog.insert(obj);
   },
   removeFromRole: function(userId, role) {
     check(role, String);
