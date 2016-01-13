@@ -44,7 +44,7 @@ Meteor.methods({
     }
     Meteor.call("user_logger", "User created", userId);
   },
-  setPassword: function(userId, email) {
+  resetPassword: function(userId, email) {
     password = Random.secret(10);
     if (Meteor.settings.DEBUG) {
       password = "secret"

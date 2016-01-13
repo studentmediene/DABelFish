@@ -93,7 +93,7 @@ Template.user.events({
     });
   },
   "click #resetPassword": function(event, template){
-    Meteor.call("setPassword", this._id, this.username, function(error, result){
+    Meteor.call("resetPassword", this._id, this.username, function(error, result){
       if(error){
         sAlert.error("Unable to reset password");
         console.log("error", error);
@@ -109,7 +109,7 @@ Template.user.events({
   },
   "click #pagination-older": function(event, template) {
     var cursor = Number(Session.get("userActivityCursor"));
-    var count = - 10; 
+    var count = - 10;
     if (Session.get("userActivityText")){
       count += DABText.find({createdByID: this._id}).count();
     } else {
