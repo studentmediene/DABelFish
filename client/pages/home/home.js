@@ -100,5 +100,8 @@ Template.home.events({
         sAlert.success("Text reset to default");
       }
     });
+  },
+  "click #automatic": function(event, template) {
+    console.log("Hei");
   }
 });
