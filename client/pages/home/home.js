@@ -41,6 +41,13 @@ Template.home.helpers({
     if(Number(Session.get("dabTextCursor")) >= DABText.find().count() - 20)
       return "disabled";
     return "";
+  },
+  time_limits: function() {
+    var list = [];
+    var times = [1,2,3,4,5,7,10,15,20,30,45,60]
+    for (var limit in times)
+      list.push({value: times[limit]});
+    return list;
   }
 });
 
@@ -58,9 +65,11 @@ Template.home.events({
       return false;
     }
 
+    var limit = (parseInt(event.target.timeLimit.value) != NaN ? Number(event.target.timeLimit.value): null);
+
     Meteor.call("addText", {
       text: text
-    }, function(error, result){
+    }, limit, function(error, result){
       if(error){
         sAlert.error(error.reason);
         console.log("error", error);

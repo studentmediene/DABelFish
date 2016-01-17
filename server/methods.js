@@ -98,18 +98,26 @@ Meteor.methods({
     Roles.removeUsersFromRoles(userId, role);
     Meteor.call("user_logger", "Role removed: " + role, userId);
   },
-  addText: function(text) {
+  addText: function(text, time_limit) {
 
     check(text, Object);
 
     text.createdByID = this.userId;
     text.createdBy = Meteor.user().profile.name;
 
+    if (time_limit){
+      check(time_limit, Number);
+      if (time_limit < 60 && time_limit >= 1) {
+        text.lastUntil = new Date(new Date().getTime() + time_limit * 60000);
+      }
+    }
+
     Security.can(this.userId).insert(text).for(DABText).throw();
 
     DABText.insert(text);
 
     sendDABTextFTP();
+
   },
   resetText: function() {
     text = {
@@ -161,4 +169,14 @@ resetDabText = function() {
     createdByID: Random.id()
   });
   sendDABTextFTP();
+}
+
+checkResetDabText = function() {
+  var text = DABText.findOne({}, {
+    sort: {createdAt: -1}
+  });
+  if (text.lastUntil){
+    if (new Date() > text.lastUntil)
+      resetDabText();
+  }
 }
