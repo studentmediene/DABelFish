@@ -121,7 +121,7 @@ Meteor.methods({
   },
   resetText: function() {
     text = {
-      text: getCurrentShow().title,
+      text: getCurrentShow(),
       createdBy: Meteor.user().profile.name,
       createdByID: this.userId
     }
@@ -159,12 +159,24 @@ Meteor.methods({
 // Private methods
 
 getCurrentShow = function() {
-  return HTTP.get(Meteor.settings.radioAPI.currentShows).data.current;
+  var data = {};
+  try {
+    var data = HTTP.get(Meteor.settings.radioAPI.currentShows, {timeout: 1000}).data;
+  }
+  catch(e){
+    console.log("ERROR!");
+    console.log(e);
+    data = {};
+  }
+  if (data.current){
+    return data.current.title;
+  }
+  return "Radio Revolt, Studentradioen i Trondheim";
 }
 
 resetDabText = function() {
   DABText.insert({
-    text: getCurrentShow().title,
+    text: getCurrentShow(),
     createdBy: "GLaDOS",
     createdByID: Random.id()
   });
