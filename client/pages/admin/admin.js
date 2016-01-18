@@ -79,15 +79,14 @@ Template.admin.events({
 
     user = {
       username: username,
+      roles: ['user'],
       profile: {
         name: name
       }
     }
 
     if(admin) {
-      user.roles = ['admin'];
-    } else {
-      user.roles = ['user'];
+      user.roles.push('admin');
     }
 
     // Add user
