@@ -65,11 +65,9 @@ Template.home.events({
       return false;
     }
 
-    var limit = (parseInt(event.target.timeLimit.value) != NaN ? Number(event.target.timeLimit.value): null);
-
     Meteor.call("addText", {
       text: text
-    }, limit, function(error, result){
+    }, function(error, result){
       if(error){
         sAlert.error(error.reason);
         console.log("error", error);
