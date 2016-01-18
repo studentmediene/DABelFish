@@ -31,7 +31,7 @@ Meteor.methods({
         to: user.username,
         from: "Radioteknisk <radioteknisk@studentmediene.no>",
         subject: "You can now sign in at dab.radiorevolt.no",
-        text: "An administrator has created a new account with this email at rrdab.meteor.com.\n" +
+        text: "An administrator has created a new account with this email at dab.radiorevolt.no.\n" +
         "You are now registrerd with the following information\n\n" +
         "Name: " + user.profile.name + "\n" +
         "Email: " + user.username + "\n" +
@@ -63,7 +63,7 @@ Meteor.methods({
         Mail.send({
           to: user.username,
           from: "Radioteknisk <radioteknisk@studentmediene.no>",
-          subject: "New password at rrdab.meteor.com",
+          subject: "New password at dab.radiorevolt.no",
           text: "An administrator has reset your password.\n" +
           "Your new password is: " + password
         });
@@ -98,19 +98,12 @@ Meteor.methods({
     Roles.removeUsersFromRoles(userId, role);
     Meteor.call("user_logger", "Role removed: " + role, userId);
   },
-  addText: function(text, time_limit) {
+  addText: function(text) {
 
     check(text, Object);
 
     text.createdByID = this.userId;
     text.createdBy = Meteor.user().profile.name;
-
-    if (time_limit){
-      check(time_limit, Number);
-      if (time_limit < 60 && time_limit >= 1) {
-        text.lastUntil = new Date(new Date().getTime() + time_limit * 60000);
-      }
-    }
 
     Security.can(this.userId).insert(text).for(DABText).throw();
 

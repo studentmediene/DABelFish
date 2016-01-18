@@ -11,21 +11,7 @@
         <span class="input-group-addon" id="count-addon"><span id="characters-used">0</span>/{{textLimit}}</span>
       </div>
     </div>
-    <ul class="list-inline">
-      <li class="form-group">
-        <label for="timeLimit">Set time limit (minutes):</label>
-        <select class="form-control" id="timeLimit">
-          <option>Av</option>
-          {{#each time_limits}}
-            <option>{{value}}</option>
-          {{/each}}
-        </select>
-        
-      </li>
-      <li>
-        <button type="submit" class="btn btn-primary">Submit</button>
-      </li>
-    </ul>
+    <button type="submit" class="btn btn-primary">Submit</button>
   </form>
 
   <blockquote id="current-text">
