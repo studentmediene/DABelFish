@@ -3,7 +3,7 @@ SyncedCron.add({
   name: 'Update DAB text with current show',
 
   schedule: function(parser) {
-    return parser.cron('30 0 * * * *', true); // thirty seconds past every hour
+    return parser.cron('30 0 7-23 * * *', true); // thirty seconds past every hour
   },
   job: function() {
     var setDefaultText = resetDabText();
@@ -46,6 +46,7 @@ SyncedCron.add({
                   createdBy: "GLaDOS",
                   createdByID: Random.id()
                 });
+                sendDABTextFTP();
               }
             }
           }
