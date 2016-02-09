@@ -9,19 +9,23 @@ Meteor.publish("allUserData", function() {
   }
 });
 
-Meteor.publish("dabText", function(a) {
+Meteor.publish("dabText", function(s) {
   if(this.userId){
     return DABText.find({}, {
       sort: {createdAt: -1},
-      skip: a || 0,
+      skip: s || 0,
       limit: 20
     });
   }
 });
 
-Meteor.publish("userLog", function() {
+Meteor.publish("userLog", function(s, u) {
   if (Roles.userIsInRole(this.userId, "admin")){
-    return UserLog.find();
+    return UserLog.find({$or: [{createdById: u}, {userId: u}]}, {
+      sort: {createdAt: -1},
+      skip: s || 0,
+      limit: 10
+    });
   } else {
     this.stop();
     return;
