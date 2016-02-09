@@ -24,10 +24,11 @@ Template.profile.events({
          event.target.oldPassword.value = "";
          event.target.newPassword1.value = "";
          event.target.newPassword2.value = "";
-         Meteor.call("user_logger", "Changed password.", Meteor.user()._id);
+         user = Meteor.users.findOne({_id: Meteor.user()._id})
+         Meteor.call("user_logger", user.profile.name + " changed password", user._id);
        }
      });
-     
+
      return false;
   }
 });

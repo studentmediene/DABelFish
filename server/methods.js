@@ -42,7 +42,7 @@ Meteor.methods({
         "Radioteknisk"
       });
     }
-    Meteor.call("user_logger", "User created", userId);
+    Meteor.call("user_logger", user.createdBy + " created the user '" + user.profile.name + "'", userId);
   },
   resetUserPassword: function(userId) {
     password = Random.secret(10);
@@ -52,6 +52,7 @@ Meteor.methods({
     }
 
     user = Meteor.users.findOne({_id: userId});
+    admin = Meteor.users.findOne({_id: this.userId});
 
     if(!user) {
       throw new Meteor.Error(400, "None-existing user");
@@ -69,7 +70,7 @@ Meteor.methods({
         });
       }
     });
-    Meteor.call("user_logger", "New password sent to mail.", userId);
+    Meteor.call("user_logger", admin.profile.name + " reset " + user.profile.name + "'s password", userId);
   },
   addToRole: function(userId, role) {
     check(role, String);
@@ -81,9 +82,12 @@ Meteor.methods({
 
     Security.can(this.userId).update(userId, modifier).for(Meteor.users).throw();
 
+    admin = Meteor.users.findOne({_id: this.userId});
+    user = Meteor.users.findOne({_id: userId});
+
     Roles.addUsersToRoles(userId, role);
 
-    Meteor.call("user_logger", "Role added: " + role, userId);
+    Meteor.call("user_logger", admin.profile.name + " added " + user.profile.name + " to role: " + role, userId);
   },
   removeFromRole: function(userId, role) {
     check(role, String);
@@ -95,8 +99,11 @@ Meteor.methods({
 
     Security.can(this.userId).update(userId, modifier).for(Meteor.users).throw();
 
+    admin = Meteor.users.findOne({_id: this.userId});
+    user = Meteor.users.findOne({_id: userId});
+
     Roles.removeUsersFromRoles(userId, role);
-    Meteor.call("user_logger", "Role removed: " + role, userId);
+    Meteor.call("user_logger", admin.profile.name + " removed " + user.profile.name + " from role: " + role, userId);
   },
   addText: function(text) {
 
@@ -107,7 +114,11 @@ Meteor.methods({
 
     Security.can(this.userId).insert(text).for(DABText).throw();
 
+    user = Meteor.users.findOne({_id: this.userId});
+
     DABText.insert(text);
+
+    Meteor.call("user_logger", user.profile.name + " added DAB-text: '" + text.text + "'", this.userId);
 
     sendDABTextFTP();
 
@@ -120,6 +131,10 @@ Meteor.methods({
     }
 
     Security.can(this.userId).insert(text).for(DABText).throw();
+
+    user = Meteor.users.findOne({_id: this.userId});
+
+    Meteor.call("user_logger", user.profile.name + " reset DAB-text to default", this.userId);
 
     DABText.insert(text);
 
@@ -146,6 +161,12 @@ Meteor.methods({
     Security.can(this.userId).insert(obj).for(UserLog).throw();
 
     UserLog.insert(obj);
+  },
+  DABTextCount: function() {
+    return DABText.find().count();
+  },
+  UserLogCount: function(userId) {
+    return UserLog.find({$or: [{createdById: userId}, {userId: userId}]}).count();
   }
 });
 

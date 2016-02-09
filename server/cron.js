@@ -11,16 +11,4 @@ SyncedCron.add({
   }
 });
 
-SyncedCron.add({
-  name: "Check if text has to be reset",
-
-  schedule: function(parser) {
-    return parser.text("every 1 minute");
-  },
-  job: function() {
-    var checkReset = checkResetDabText();
-    return checkReset;
-  }
-});
-
 SyncedCron.start();
