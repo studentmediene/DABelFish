@@ -1,7 +1,11 @@
 /* Client-side code */
 
+Session.set("dabTextCursor", 0);
+
 Accounts.onLogin(function(){
-  Meteor.subscribe("dabText");
+  Tracker.autorun(function(){
+     Meteor.subscribe("dabText", Session.get("dabTextCursor"));
+  });
   Meteor.subscribe("allUserData");
   Meteor.subscribe("userLog");
 });

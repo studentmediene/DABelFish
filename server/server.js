@@ -9,9 +9,13 @@ Meteor.publish("allUserData", function() {
   }
 });
 
-Meteor.publish("dabText", function() {
+Meteor.publish("dabText", function(a) {
   if(this.userId){
-    return DABText.find();
+    return DABText.find({}, {
+      sort: {createdAt: -1},
+      skip: a || 0,
+      limit: 20
+    });
   }
 });
 

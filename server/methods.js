@@ -146,6 +146,9 @@ Meteor.methods({
     Security.can(this.userId).insert(obj).for(UserLog).throw();
 
     UserLog.insert(obj);
+  },
+  DABTextCount: function () {
+    return DABText.find().count();
   }
 });
 

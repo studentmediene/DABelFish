@@ -25,12 +25,7 @@ Template.home.helpers({
   },
   texts: function() {
     cursor = Session.get("dabTextCursor");
-    return DABText.find({},
-    {
-      sort: {createdAt: -1},
-      skip: cursor || 0,
-      limit: 20
-    });
+    return DABText.find();
   },
   paginationNewerDisabled: function() {
     if(Number(Session.get("dabTextCursor")) < 20)
@@ -38,9 +33,11 @@ Template.home.helpers({
     return "";
   },
   paginationOlderDisabled: function() {
-    if(Number(Session.get("dabTextCursor")) >= DABText.find().count() - 20)
-      return "disabled";
-    return "";
+    Meteor.call("DABTextCount", function(error, result) {
+      if(Number(Session.get("dabTextCursor")) >= Number(result) - 20)
+        return "disabled";
+      return "";
+    });
   },
   time_limits: function() {
     var list = [];
@@ -85,9 +82,7 @@ Template.home.events({
   },
   "click #pagination-older": function(event, template) {
     var cursor = Number(Session.get("dabTextCursor"));
-    var count = DABText.find().count() - 20;
-    if(cursor < count)
-      Session.set("dabTextCursor", cursor + 20);
+    Session.set("dabTextCursor", cursor + 20);
   },
   "click #reset-text": function(event, template) {
     Meteor.call("resetText", function(error, result){
