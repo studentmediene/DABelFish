@@ -40,19 +40,15 @@
           <table class="table table-hover table-responsive">
             <thead>
               <tr>
-                {{#if action }}
                 <th>Action</th>
-                {{else}}
-                <th>Text</th>
-                {{/if}}
                 <th>Date</th>
               </tr>
             </thead>
             <tbody>
               {{#each actions}}
                 <tr>
-                  <td>{{#if action }} {{action}} {{else}} {{text}} {{/if}}</td>
-                  <td>{{formatDate createdAt}} {{#if action}} by {{createdBy}} {{/if}}</td>
+                  <td>{{action}}</td>
+                  <td>{{formatDate createdAt}}</td>
                 </tr>
               {{/each}}
             </tbody>
