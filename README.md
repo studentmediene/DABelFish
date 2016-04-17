@@ -47,3 +47,7 @@ Allows the server to run code with client-side restrictions. Integrates nicely w
 ### [random](https://atmospherejs.com/meteor/random)
 
 We use it to generate a random id (`Random.id()`) for the initial user. See [documentation](https://atmospherejs.com/meteor/random) for a complete list of features.
+
+### [nimble:restivus](https://atmospherejs.com/nimble/restivus)
+
+A package that makes it easy to create a rest API for usage in Meteor. For usage see [the documentation](https://github.com/kahmali/meteor-restivus/)
